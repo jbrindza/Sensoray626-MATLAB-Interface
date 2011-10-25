@@ -1,0 +1,299 @@
+*************************************************************************
+*****  Sensoray Model 626 Analog and Digital I/O + Encoder/Counter  *****
+*****                      Linux SDK Version 1.0                    *****
+*************************************************************************
+
+
+FILE LIST:
+
+(Kernel module level Driver):
+
+s626drv.c    ----  Source code for the S626 lower-level loadable Linux
+                   driver module.
+s626drv.h    ----  Header file containing constant, type and structure
+                   definitions for the driver module.
+s626.h       ----  Header file containing definitions for ioctl() commands.
+
+(CORE and MOD level Driver):
+
+s626core.c   ----  Source code for designated 626 driver core (OS-indepedent).
+s626core.h   ----  Header file for the s626 core, including type definitions
+                   and core function prototypes.
+s626mod.c    ----  Source code for 626 Linux interface module and 626 Linux
+                   driver API wrapper.
+s626mod.h    ----  Header file for 626 Linux interface module and containing
+                   common type definitions.
+
+(API):
+
+s626api.h    ----  Header file for 626 applications to include and face
+                   626 driver API.
+App626.h     ----  Header file containing constant definitions for 626
+                   applications.
+
+(Demo&Samples):
+
+s626demo.c   ----  Source code of Sensoray Model 626 demo application.
+s626dm2b.c   ----  Sample application of using multi-626 boards, 
+                   including the source code of the demo application.
+
+(Others):
+
+Makefile     ----  Makefile for: i) compiling and installing the kernel module
+                   level driver; ii) building core&mod level driver library; 
+                   iii) compiling & linking demo/sample application.
+MAKEDEV      ----  Script for generating special device files.
+COPYING      ----  The GPL agreement.
+README       ----  This file.
+
+
+
+DOCUMENTATION:
+
+1) The driver APIs are documented/described in <<Model 626 Driver for
+   Windows>> manual, and partially illustrated in the demo/sample
+   application. Please refer to the source code "s626demo.c" and 
+   "s626dm2b.c" to find out how to use the driver API functions to 
+   implement your own application(s).
+
+2) The driver API details and the function call usage described in the 
+   manual <<Model 626 Driver for Windows>> are applicable to 626 Linux 
+   driver too, since the 626 driver APIs are designed as OS-independent.
+
+3) The standard open(), close(), read(), write() and ioctl() methods
+   are only used in implementing lower-level Linux driver module.
+   It is not encouraged to use this interface and function calls to
+   develop your application(s) for the Sensoray 626 module. But, if 
+   for some reason you really need to develop any application(s) with
+   this interface or at this level, please refer to the source code 
+   's626drv.c' to see the interfaces and details. Also please check 
+   the Linux man pages for a complete kernel module level interface 
+   description.
+
+4) Refer to the documentation <<Instruction Manual: Sensoray Model 626
+   PCI Multifunction I/O Board>> for the hardware specification and
+   installation instructions.
+
+5) As a summary or a handy reference, the connector pin definitions
+   for Digital I/O are shown below:
+
+          J2 - pin1:    DIO23           J3 - pin1:    DIO47
+          J2 - pin3:    DIO22           J3 - pin3:    DIO46
+          J2 - pin5:    DIO21           J3 - pin5:    DIO45
+          J2 - pin7:    DIO20           J3 - pin7:    DIO44
+          J2 - pin9:    DIO19           J3 - pin9:    DIO43
+          J2 - pin11:   DIO18           J3 - pin11:   DIO42
+          J2 - pin13:   DIO17           J3 - pin13:   DIO41
+          J2 - pin15:   DIO16           J3 - pin15:   DIO40
+          J2 - pin17:   DIO15           J3 - pin17:   DIO39
+          J2 - pin19:   DIO14           J3 - pin19:   DIO38
+          J2 - pin21:   DIO13           J3 - pin21:   DIO37
+          J2 - pin23:   DIO12           J3 - pin23:   DIO36
+          J2 - pin25:   DIO11           J3 - pin25:   DIO35
+          J2 - pin27:   DIO10           J3 - pin27:   DIO34
+          J2 - pin29:   DIO9            J3 - pin29:   DIO33
+          J2 - pin31:   DIO8            J3 - pin31:   DIO32
+          J2 - pin33:   DIO7            J3 - pin33:   DIO31
+          J2 - pin35:   DIO6            J3 - pin35:   DIO30
+          J2 - pin37:   DIO5            J3 - pin37:   DIO29
+          J2 - pin39:   DIO4            J3 - pin39:   DIO28
+          J2 - pin41:   DIO3            J3 - pin41:   DIO27
+          J2 - pin43:   DIO2            J3 - pin43:   DIO26
+          J2 - pin45:   DIO1            J3 - pin45:   DIO25
+          J2 - pin47:   DIO0            J3 - pin47:   DIO24
+          J2 - pin49:    +5V            J3 - pin49:    +5V
+         All even pins   GND           All even pins   GND
+
+6) As a summary or a handy reference, the connector pin definitions
+   for A/D and D/A are shown below:
+
+          J1 - pin1:   Shield           J1 - pin2:     GND
+          J1 - pin3:    -AD0            J1 - pin4:    +AD0
+          J1 - pin5:    -AD1            J1 - pin6:    +AD1
+          J1 - pin7:    -AD2            J1 - pin8:    +AD2
+          J1 - pin9:    -AD3            J1 - pin10:   +AD3
+          J1 - pin11:   -AD4            J1 - pin12:   +AD4
+          J1 - pin13:   -AD5            J1 - pin14:   +AD5
+          J1 - pin15:   -AD6            J1 - pin16:   +AD6
+          J1 - pin17:   -AD7            J1 - pin18:   +AD7
+          J1 - pin19:    GND            J1 - pin20:    GND
+          J1 - pin21:   -AD8            J1 - pin22:   +AD8
+          J1 - pin23:   -AD9            J1 - pin24:   +AD9
+          J1 - pin25:   -AD10           J1 - pin26:   +AD10
+          J1 - pin27:   -AD11           J1 - pin28:   +AD11
+          J1 - pin29:   -AD12           J1 - pin30:   +AD12
+          J1 - pin31:   -AD13           J1 - pin32:   +AD13
+          J1 - pin33:   -AD14           J1 - pin34:   +AD14
+          J1 - pin35:   -AD15           J1 - pin36:   +AD15
+          J1 - pin37:    GND            J1 - pin38:    GND
+          J1 - pin39:    GND            J1 - pin40:    GND
+          J1 - pin41:  Sense1           J1 - pin42:   DAC0
+          J1 - pin43:  Sense2           J1 - pin44:   DAC1
+          J1 - pin45:  Sense3           J1 - pin46:   DAC2
+          J1 - pin47:  Sense4           J1 - pin48:   DAC3
+          J1 - pin49:    GND            J1 - pin50:  Shield
+
+7) As a summary or a handy reference, the connector pin definitions
+   for Encoder are shown below:
+
+          J5-pin1:  Encoder(0A) A-      J5-pin2:  Encoder(0A) A+
+          J5-pin3:       GND            J5-pin4:  Encoder(0A) B-
+          J5-pin5:  Encoder(0A) B+      J5-pin6:       +5V
+          J5-pin7:  Encoder(0A) I-      J5-pin8:  Encoder(0A) I+
+          J5-pin9:       GND            J5-pin10: Encoder(1A) A-
+          J5-pin11: Encoder(1A) A+      J5-pin12:      +5V
+          J5-pin13: Encoder(1A) B-      J5-pin14: Encoder(1A) B+
+          J5-pin15:      GND            J5-pin16: Encoder(1A) I-
+          J5-pin17: Encoder(1A) I+      J5-pin18:      +5V
+          J5-pin19: Encoder(2A) A-      J5-pin20: Encoder(2A) A+
+          J5-pin21:      GND            J5-pin22: Encoder(2A) B-
+          J5-pin23: Encoder(2A) B+      J5-pin24:      +5V
+          J5-pin25: Encoder(2A) I-      J5-pin26: Encoder(2A) I+
+
+          J4-pin1:  Encoder(0B) A-      J4-pin2:  Encoder(0B) A+
+          J4-pin3:       GND            J4-pin4:  Encoder(0B) B-
+          J4-pin5:  Encoder(0B) B+      J4-pin6:       +5V
+          J4-pin7:  Encoder(0B) I-      J4-pin8:  Encoder(0B) I+
+          J4-pin9:       GND            J4-pin10: Encoder(1B) A-
+          J4-pin11: Encoder(1B) A+      J4-pin12:      +5V
+          J4-pin13: Encoder(1B) B-      J4-pin14: Encoder(1B) B+
+          J4-pin15:      GND            J4-pin16: Encoder(1B) I-
+          J4-pin17: Encoder(1B) I+      J4-pin18:      +5V
+          J4-pin19: Encoder(2B) A-      J4-pin20: Encoder(2B) A+
+          J4-pin21:      GND            J4-pin22: Encoder(2B) B-
+          J4-pin23: Encoder(2B) B+      J4-pin24:      +5V
+          J4-pin25: Encoder(2B) I-      J4-pin26: Encoder(2B) I+
+
+8) In the demo application, the following samples are available:
+   ( all tested and working well )
+
+    space ------ toggle the flashing of all the boards LED's on/off
+    1     ------ toggle the flashing of the 1st boards LED's on/off
+    relay ------ toggle on-board relay on/off
+    dO    ------ toggle all digital outputs ( DIO channels: 47-0 )
+    dI    ------ read all digital inputs ( DIO channel: 47-0 )
+    rdAD  ------ read any analog input ( AD channels: 0-15 )
+    rpDA  ------ ramp any DAC output ( DA channel: 0-3 )
+    Sacq  ------ scattered acquisition from all ADC channels ( 0-15 )
+    mpW   ------ use counter to measure the width of a pulse
+    mFrq  ------ use a pair of counter to measure the frequency of a signal
+    intRpt ----- generate a 1 second interrupt via counter
+    intDIO ----- count interrupts occored on DIO channels
+    enc   ------ encoder test (a simulated quadrature encoder is included)
+    quadr ------ use counter to test real quadrature encoder
+    tDO   ------ test Digital Output throughput
+    tDI   ------ test Digital Input throughput
+    tAD   ------ test ADC throughput
+    tDA   ------ test DAC throughput
+
+
+
+KERNEL MODULE LEVEL DRIVER INSTALLATION:
+
+1) Login from root, enter the directory where the files have been installed
+   (extracted to).
+
+2) Type 'make clean'    --- This will clean (remove) all old build files.
+
+3) Type 'make'          --- Builds the kernel module level driver.
+
+4) Type 'make install'  --- Installs the driver and makes the special
+                            files.
+   Note: On Ubuntu, you make have to run 'sudo make install'
+
+IMPORTANT:
+
+      In order for the make to be successful, the kernel source and
+      header files must be installed in the directory
+      '/usr/src/{kernel version}/include'. A link directory
+      '/usr/src/linux' must be linked to this {kernel version}
+      directory.
+
+NOTE: Four special device files "/dev/s626a0", "/dev/s626a1", "/dev/s626a2",
+      and "/dev/s626a3" will be created after installing the driver.
+
+
+
+LOADING THE DRIVER:
+
+1) type 'insmod s626' or 'modprobe s626' -- for loading the driver.
+   On Ubuntu, use 'sudo insmod s626' or 'sudo modprobe s626'
+
+2) type 'lsmod' -- for checking if the driver is loaded. This step is 
+   optional and just for checking.
+
+
+
+BUILDING CORE&MOD LIBRARY:
+
+1) Type 'make clnall' ---  This will remove all old obj, lib and exe files.
+
+2) Type 'make lib'    ---  Builds the core&mod driver library, if you need
+                           to build a new one or lost libs626.a from
+                           distribution.
+
+
+
+BUILDING AND RUNNING THE DEMO/SAMPLE APPLICATION:
+
+1) Enter the directory where the files are installed.
+
+2) Build the demo/sample applications using 'make demo'.
+
+3) Load the driver using 'insmod s626' or 'modprobe s626'
+
+5) Run './626demo' to execute the demo (sample) application.
+   Follow the manu options to select individual demo or test items.
+
+6) Run './626dm2b' to execute the demo (sample) application of using
+   two 626 boards. It's portable for any application using more than
+   two multi-626 boards. Follow the manu options to select individual
+   demo or test items.
+
+
+
+BUG REPORT:
+
+If you happen to find/see any bug(s) in the driver, please report to
+<techsupport@sensoray.com>.
+
+
+
+ACKNOWLEDGMENT:
+
+Thank you for choosing Sensoray Model 626.
+Good luck with using 626 in your project(s)/application(s)!
+And have a lot of fun with Linux!
+
+
+
+RELEASE_LOG
+=======================================================================
+
+Version 1.0      12/19/2006
+----------------------------
+1) Added support for using multi-626 boards
+2) Added sample application of using two 626 boards. 
+   It's portable for using more than two multi-626 boards.
+Tested:  with
+       SuSE 9.2 -- 2.6.9
+
+Version 0.3      05/20/2005
+----------------------------
+1) Added support for kernel 2.6
+2) Optimized kernel module level driver code to prevent the driver from 
+   potential stack overflow.
+Notes: kernel list (tested with, before release)
+       SuSE 8.1 -- 2.4.19-4GB      SuSE 9.2 -- 2.6.8-24
+       RedHat 9 -- 2.4.20-6        RedHat 9 -- 2.6.11
+       Fedora   -- 2.6.10
+
+Version 0.2      04/22/2004
+---------------------------
+1) New module structure with optimization
+2) Added more demo and test sample programs
+
+Version 0.1      07/01/2003
+---------------------------
+Initial version
+

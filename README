@@ -1,0 +1,104 @@
+Jordan Brindza 
+brindza@seas.upenn.edu 
+University of Pennsylvania 
+March 2011
+
+
+Sensory 626 MATLAB Interface
+Version 1.0
+
+
+
+DIRECTORY STRUCTURE ------------------------------------------------------------
+
+  driver/     original Sensory driver source code 
+  inc/        header files for the sensoray drivers and mex interface 
+  lib/        location of compiled libraries
+  matlab/     some demo matlab function showing how to use the interface 
+  mex/        location of compiled mex files 
+  src/        c/c++ source files for the s626 mex interface
+
+
+
+INSTALL ------------------------------------------------------------------------
+
+  You must first install the Sensory 626 drivers. This can be done using the
+  provided Makefile.
+
+    cd driver sudo make install
+ 
+  Make sure the driver is loaded.
+
+    sudo modprobe s626
+
+  To verify that it is loaded you can run:
+
+    lsmod | grep s626
+    
+  The output should be something similar to:
+    
+    s626            11988   2
+
+
+
+COMPILE THE INTERFACE ---------------------------------------------------------
+
+  There is also a Makefile provided to compile the mex interface to the 
+  drivers. This compiles the static library for the Sensory interfaces and the
+  s626 mex file. 
+
+    make all
+
+  libs626.a will be created in ./lib
+  s626.mexglx and time.mexglx will be created in ./mex
+
+
+
+USING THE INTERFACE ------------------------------------------------------------
+
+Please see matlab/s626_example.m for examples of how to use all of the available
+functions. 
+
+
+The IIR filter used by the velocity and acceleration estimates is as follows:
+v_new = (weight * v_current) + ((1 - weight) * v_previous);
+
+
+The ecoder mapping is as follows:
+index     name
+1         CNTR_0A
+2         CNTR_1A
+3         CNTR_2A
+4         CNTR_0B
+5         CNTR_1B
+6         CNTR_2B
+
+
+matlab/encoder_plot.m is a matlab struct that will plot the 
+matlab/plot_encoder.m is a script that uses an instance of encoder_plot to plot
+the encoder values in real time. In matlab run:
+>> plot_encoder
+
+each encoder is plotted in a different color
+1         red
+2         green
+3         blue
+4         black
+5         yellow
+6         magenta
+
+
+
+
+
+
+RELEASE LOG --------------------------------------------------------------------
+
+Version 1.0     03/08/2011
+Initial release
+
+
+COPYING ------------------------------------------------------------------------
+
+Please see the COPYING file for the GPL aggreement
+
